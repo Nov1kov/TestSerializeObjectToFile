@@ -47,6 +47,7 @@ namespace TestSerializeObjectToFile
             Assert.Equal(111, model.Id);
             Assert.Equal("some string", model.Field);
             Assert.True(string.IsNullOrEmpty(model.NewField));
+            Assert.NotNull(model.NewList);
             Assert.Empty(model.NewList);
             var exceptedList = new List<Item>
             {

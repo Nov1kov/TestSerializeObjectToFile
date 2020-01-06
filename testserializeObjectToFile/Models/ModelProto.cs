@@ -20,10 +20,10 @@ namespace TestSerializeObjectToFile.Models
         public List<Item> List { get; } = new List<Item>();
         
         [ProtoMember(7)]
-        public List<Item> NewList { get; } = new List<Item>();
-        
-        [ProtoMember(8)]
         public ClassWithParentLink Recursive { get; set; }
+        
+        // field new in version 2
+        [ProtoMember(8)] public List<Item> NewList { get; } = new List<Item>();
 
         // fields from 1 version
         //[ProtoMember(5)] public string MissingField { get; set; }
