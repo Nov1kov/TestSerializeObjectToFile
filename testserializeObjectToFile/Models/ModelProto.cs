@@ -1,35 +1,56 @@
 using System.Collections.Generic;
+using ProtoBuf;
 
-namespace TestSerializeObjectToFile
+namespace TestSerializeObjectToFile.Models
 {
     // model 2 version
-    public class Model
+    [ProtoContract]
+    public class ModelProto
     {
+        [ProtoMember(1)]
         public int Id { get; set; }
+        
+        [ProtoMember(2)]
         public string Field { get; set; }
+        
+        [ProtoMember(3)]
         public string NewField { get; set; }
+        
+        [ProtoMember(4)]
         public List<Item> List { get; } = new List<Item>();
+        
+        [ProtoMember(7)]
         public List<Item> NewList { get; } = new List<Item>();
+        
+        [ProtoMember(8)]
         public ClassWithParentLink Recursive { get; set; }
+
         // fields from 1 version
-        public string MissingField { get; set; }
-        public List<string> MissingList { get; } = new List<string>();
+        //[ProtoMember(5)] public string MissingField { get; set; }
+        
+        //[ProtoMember(6)] public List<string> MissingList { get; } = new List<string>();
     }
 
+    [ProtoContract(SkipConstructor = true)]
     public class ClassWithParentLink
     {
-        public Model Model { get; }
+        [ProtoMember(1, AsReference = true)]
+        public ModelProto Model { get; }
+        
+        [ProtoMember(2)]
         public int Id { get; }
 
-        public ClassWithParentLink(Model model, int id)
+        public ClassWithParentLink(ModelProto model, int id)
         {
             Model = model;
             Id = id;
         }
     }
 
+    [ProtoContract(SkipConstructor = true)]
     public class Item
     {
+        [ProtoMember(1)]
         public int Id { get; }
 
         public Item(int id)
