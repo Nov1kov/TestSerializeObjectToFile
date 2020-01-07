@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using ProtoBuf;
 
 namespace TestSerializeObjectToFile.Models
@@ -24,12 +25,18 @@ namespace TestSerializeObjectToFile.Models
         public ClassWithLink Recursive { get; set; }
         
         // field new in version 2
-        [ProtoMember(8)] public List<Item> NewList { get; } = new List<Item>();
+        [ProtoMember(8)] public List<Item> NewList { get; set; } = new List<Item>();
 
         // fields from 1 version
         //[ProtoMember(5)] public string MissingField { get; set; }
         
         //[ProtoMember(6)] public List<string> MissingList { get; } = new List<string>();
+        
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext context)
+        {
+            if (NewList == null) NewList = new List<Item>();
+        }
     }
 
     [ProtoContract(SkipConstructor = true), Serializable]

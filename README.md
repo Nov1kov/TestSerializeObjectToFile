@@ -2,19 +2,19 @@
 
 ### Protobuf
 
-features:
-* attributes in model `[ProtoContract]` `[ProtoMember]`
+* required attributes for classes and fields `[ProtoContract]` `[ProtoMember]`
 * strong order in fields, so attribute required for every field
 * for recursion `[ProtoMember(1, AsReference = true)]`
 * follow class with constructors `[ProtoContract(SkipConstructor = true)]`
 
+
 ### Binary 
-* attributes in model `[Serializable]`
-* 
+* required attributes for classes `[Serializable]`
+* required callbacks for new objects `[OnDeserialized]`
 
 
 ### Newtonsoft.Json
-* Can without attributes
+* optional attributes for classes and fields
 * for recursion options `ReferenceLoopHandling = ReferenceLoopHandling.Serialize`, `PreserveReferencesHandling = PreserveReferencesHandling.Objects`
 
 
