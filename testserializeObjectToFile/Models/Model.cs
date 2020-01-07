@@ -5,7 +5,7 @@ namespace TestSerializeObjectToFile.Models
 {
     // model 2 version
     [ProtoContract]
-    public class ModelProto
+    public class Model
     {
         [ProtoMember(1)]
         public int Id { get; set; }
@@ -20,7 +20,7 @@ namespace TestSerializeObjectToFile.Models
         public List<Item> List { get; } = new List<Item>();
         
         [ProtoMember(7)]
-        public ClassWithParentLink Recursive { get; set; }
+        public ClassWithLink Recursive { get; set; }
         
         // field new in version 2
         [ProtoMember(8)] public List<Item> NewList { get; } = new List<Item>();
@@ -32,15 +32,15 @@ namespace TestSerializeObjectToFile.Models
     }
 
     [ProtoContract(SkipConstructor = true)]
-    public class ClassWithParentLink
+    public class ClassWithLink
     {
         [ProtoMember(1, AsReference = true)]
-        public ModelProto Model { get; }
+        public Model Model { get; }
         
         [ProtoMember(2)]
         public int Id { get; }
 
-        public ClassWithParentLink(ModelProto model, int id)
+        public ClassWithLink(Model model, int id)
         {
             Model = model;
             Id = id;

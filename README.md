@@ -5,7 +5,7 @@
 features:
 * attributes in model `[ProtoContract]` `[ProtoMember]`
 * strong order in fields, so attribute required for every field
-* no auth recursion, for recursive `[ProtoMember(1, AsReference = true)]`
+* for recursion `[ProtoMember(1, AsReference = true)]`
 * follow class with constructors `[ProtoContract(SkipConstructor = true)]`
 
 ### Binary 
@@ -14,6 +14,8 @@ features:
 
 
 ### Newtonsoft.Json
+* Can without attributes
+* for recursion options `ReferenceLoopHandling = ReferenceLoopHandling.Serialize`, `PreserveReferencesHandling = PreserveReferencesHandling.Objects`
 
 
 also read:
