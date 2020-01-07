@@ -39,6 +39,21 @@ namespace TestSerializeObjectToFile
             var jsonController = new JsonController(CacheFileDirectory);
             var model = jsonController.Load<Model>(JsonFile);
             ValidateModel(model);
+        }  
+        
+        [Fact]
+        public void Binary_Save()
+        {
+            var jsonController = new BinaryController(CacheFileDirectory);
+            jsonController.Save(_model, BinaryFile);
+        }
+                
+        [Fact]
+        public void Binary_Load()
+        {
+            var jsonController = new BinaryController(CacheFileDirectory);
+            var model = jsonController.Load<Model>(BinaryFile);
+            ValidateModel(model);
         }
         
         [Fact]

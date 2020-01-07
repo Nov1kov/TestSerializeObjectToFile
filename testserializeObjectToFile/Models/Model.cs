@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using ProtoBuf;
 
 namespace TestSerializeObjectToFile.Models
 {
     // model 2 version
-    [ProtoContract]
+    [ProtoContract, Serializable]
     public class Model
     {
         [ProtoMember(1)]
@@ -31,7 +32,7 @@ namespace TestSerializeObjectToFile.Models
         //[ProtoMember(6)] public List<string> MissingList { get; } = new List<string>();
     }
 
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract(SkipConstructor = true), Serializable]
     public class ClassWithLink
     {
         [ProtoMember(1, AsReference = true)]
@@ -47,7 +48,7 @@ namespace TestSerializeObjectToFile.Models
         }
     }
 
-    [ProtoContract(SkipConstructor = true)]
+    [ProtoContract(SkipConstructor = true), Serializable]
     public class Item
     {
         [ProtoMember(1)]
