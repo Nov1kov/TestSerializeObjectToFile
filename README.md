@@ -43,9 +43,9 @@ public class Model
 
 * required attributes for classes and fields `[ProtoContract]` `[ProtoMember]`
 * strong order in fields, so attribute required for every field
-* for recursion `[ProtoMember(1, AsReference = true)]`
-* follow class with constructors `[ProtoContract(SkipConstructor = true)]`
-
+* required mark link against recusrsion `[ProtoMember(1, AsReference = true)]`
+* required attribute for class with constructors `[ProtoContract(SkipConstructor = true)]`f
+* additional setup for sub classes `ProtoInclude`
 
 ### Binary 
 * required attributes for classes `[Serializable]`
@@ -72,6 +72,7 @@ public class Model
 * :heavy_plus_sign: no third party libraries
 * :heavy_plus_sign: easiest support recursion
 * :heavy_minus_sign: don't support rename class, fields
+* :heavy_minus_sign: may dependency of .net version
 
 ### Newtonsoft.Json
 * :heavy_plus_sign: easiest implementation 
