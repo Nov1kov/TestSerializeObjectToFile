@@ -77,6 +77,10 @@ public class Model
 ### Newtonsoft.Json
 * :heavy_plus_sign: easiest implementation 
 
+## Todo:
+* [ ] test with big files
+* [ ] test with different namespaces
+
 #### also read:
 * [Serialization Performance comparison (C#/.NET)](https://maxondev.com/serialization-performance-comparison-c-net-formats-frameworks-xmldatacontractserializer-xmlserializer-binaryformatter-json-newtonsoft-servicestack-text/)
 * [Microsoft docs: Version tolerant serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/version-tolerant-serialization)
