@@ -26,7 +26,7 @@
       <None Update="CacheFiles\model.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="CacheFiles\binaryformatter.bin">
+      <None Update="CacheFiles\binary.data">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

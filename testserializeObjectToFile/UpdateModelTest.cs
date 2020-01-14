@@ -5,17 +5,15 @@ using Xunit;
 
 namespace TestSerializeObjectToFile
 {
-    public class CacheTests
+    public class UpdateModelTest
     {
         private Model _model;
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf.bin";
-        private const string BinaryFile = "binaryformatter.bin";
+        private const string BinaryFile = "binary.data";
         private const string JsonFile = "model.json";
         
-        private List<ICacheController> _cacheControllers = new List<ICacheController>();
-
-        public CacheTests()
+        public UpdateModelTest()
         {
             _model = new Model
             {
@@ -26,28 +24,28 @@ namespace TestSerializeObjectToFile
                 //MissingList = { "item 1", "item 2" },
             };
             _model.Recursive = new ClassWithLink(_model, 14);
-            _cacheControllers.Add(new JsonController(CacheFileDirectory, JsonFile));
-            _cacheControllers.Add(new BinaryController(CacheFileDirectory, BinaryFile));
-            _cacheControllers.Add(new ProtobufController(CacheFileDirectory, ProtobufFile));
+        }
+
+        public static IEnumerable<object[]> GetCacheController()
+        {
+            yield return new object[] { new JsonController(CacheFileDirectory, JsonFile) };
+            yield return new object[] { new BinaryController(CacheFileDirectory, BinaryFile) };
+            yield return new object[] { new ProtobufController(CacheFileDirectory, ProtobufFile) };
         }
         
-        [Fact]
-        public void Serialize_Save_Model()
+        [Theory]
+        [MemberData(nameof(GetCacheController))]
+        public void Serialize_Save_Model(ICacheController cacheController)
         {
-            foreach (var cacheController in _cacheControllers)
-            {
-                cacheController.Save(_model);
-            }
+            cacheController.Save(_model);
         }
-                
-        [Fact]
-        public void Deserialize_Load_Model()
+
+        [Theory]
+        [MemberData(nameof(GetCacheController))]
+        public void Deserialize_Load_Model(ICacheController cacheController)
         {
-            foreach (var cacheController in _cacheControllers)
-            {
-                var model = cacheController.Load<Model>();
-                ValidateModel(model);
-            }
+            var model = cacheController.Load<Model>();
+            ValidateModel(model);
         }
 
         private void ValidateModel(Model model)
