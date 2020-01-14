@@ -5,27 +5,25 @@ namespace TestSerializeObjectToFile.CacheControllers
 {
     class ProtobufController : ICacheController
     {
-        private readonly string _directory;
+        private readonly string _cacheFilePath;
 
-        public ProtobufController(string directory)
+        public ProtobufController(string directory, string fileName)
         {
-            _directory = directory;
+            _cacheFilePath = Path.Combine(directory, fileName);
             DirectoryInfo di = Directory.CreateDirectory(directory);
         }
-        
-        public bool Save<T>(T model, string fileName)
+
+        public bool Save<T>(T model)
         {
-            var cacheFilePath = Path.Combine(_directory, fileName);
-            using (var file = File.Create(cacheFilePath)) {
+            using (var file = File.Create(_cacheFilePath)) {
                 Serializer.Serialize(file, model);
                 return true;
             }
         }
 
-        public T Load<T>(string fileName)
+        public T Load<T>()
         {
-            var cacheFilePath = Path.Combine(_directory, fileName);
-            using (var file = File.OpenRead(cacheFilePath)) {
+            using (var file = File.OpenRead(_cacheFilePath)) {
                 return Serializer.Deserialize<T>(file);
             }        }
     }

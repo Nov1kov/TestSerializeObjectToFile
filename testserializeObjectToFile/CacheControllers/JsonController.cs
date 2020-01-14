@@ -5,17 +5,16 @@ namespace TestSerializeObjectToFile.CacheControllers
 {
     class JsonController : ICacheController
     {
-        private string _directory;
+        private readonly string _cacheFilePath;
 
-        public JsonController(string directory)
+        public JsonController(string directory, string fileName)
         {
-            _directory = directory;
+            _cacheFilePath = Path.Combine(directory, fileName);
+            DirectoryInfo di = Directory.CreateDirectory(directory);
         }
 
-        public bool Save<T>(T model, string fileName)
+        public bool Save<T>(T model)
         {
-            var cacheFilePath = Path.Combine(_directory, fileName);
-
             JsonSerializer serializer = new JsonSerializer
             {
                 NullValueHandling = NullValueHandling.Ignore,
@@ -23,7 +22,7 @@ namespace TestSerializeObjectToFile.CacheControllers
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
 
-            using (StreamWriter sw = new StreamWriter(cacheFilePath))
+            using (StreamWriter sw = new StreamWriter(_cacheFilePath))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 serializer.Serialize(writer, model);
@@ -31,10 +30,9 @@ namespace TestSerializeObjectToFile.CacheControllers
             }
         }
 
-        public T Load<T>(string fileName)
+        public T Load<T>()
         {
-            var cacheFilePath = Path.Combine(_directory, fileName);
-            using (StreamReader file = File.OpenText(cacheFilePath))
+            using (StreamReader file = File.OpenText(_cacheFilePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 return (T) serializer.Deserialize(file, typeof(T));

@@ -12,6 +12,8 @@ namespace TestSerializeObjectToFile
         private const string ProtobufFile = "protobuf.bin";
         private const string BinaryFile = "binaryformatter.bin";
         private const string JsonFile = "model.json";
+        
+        private List<ICacheController> _cacheControllers = new List<ICacheController>();
 
         public CacheTests()
         {
@@ -24,51 +26,28 @@ namespace TestSerializeObjectToFile
                 //MissingList = { "item 1", "item 2" },
             };
             _model.Recursive = new ClassWithLink(_model, 14);
+            _cacheControllers.Add(new JsonController(CacheFileDirectory, JsonFile));
+            _cacheControllers.Add(new BinaryController(CacheFileDirectory, BinaryFile));
+            _cacheControllers.Add(new ProtobufController(CacheFileDirectory, ProtobufFile));
         }
         
         [Fact]
-        public void Json_Save()
+        public void Serialize_Save_Model()
         {
-            var jsonController = new JsonController(CacheFileDirectory);
-            jsonController.Save(_model, JsonFile);
+            foreach (var cacheController in _cacheControllers)
+            {
+                cacheController.Save(_model);
+            }
         }
                 
         [Fact]
-        public void Json_Load()
+        public void Deserialize_Load_Model()
         {
-            var jsonController = new JsonController(CacheFileDirectory);
-            var model = jsonController.Load<Model>(JsonFile);
-            ValidateModel(model);
-        }  
-        
-        [Fact]
-        public void Binary_Save()
-        {
-            var jsonController = new BinaryController(CacheFileDirectory);
-            jsonController.Save(_model, BinaryFile);
-        }
-                
-        [Fact]
-        public void Binary_Load()
-        {
-            var jsonController = new BinaryController(CacheFileDirectory);
-            var model = jsonController.Load<Model>(BinaryFile);
-            ValidateModel(model);
-        }
-        
-        [Fact]
-        public void Proto_Save()
-        {
-            var protobuf = new ProtobufController(CacheFileDirectory);
-            protobuf.Save(_model, ProtobufFile);
-        }
-        
-        [Fact]
-        public void Proto_Load()
-        {
-            var protobuf = new ProtobufController(CacheFileDirectory);
-            var model = protobuf.Load<Model>(ProtobufFile);
-            ValidateModel(model);
+            foreach (var cacheController in _cacheControllers)
+            {
+                var model = cacheController.Load<Model>();
+                ValidateModel(model);
+            }
         }
 
         private void ValidateModel(Model model)
