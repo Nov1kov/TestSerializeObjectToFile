@@ -1,31 +1,52 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace TestSerializeObjectToFile.CacheControllers
 {
     class JsonController : ICacheController
     {
         private readonly string _cacheFilePath;
+        private JsonSerializer _serializer;
+        private readonly string _fileName;
 
         public JsonController(string directory, string fileName)
         {
             _cacheFilePath = Path.Combine(directory, fileName);
+            _fileName = fileName;
             DirectoryInfo di = Directory.CreateDirectory(directory);
-        }
-
-        public bool Save<T>(T model)
-        {
-            JsonSerializer serializer = new JsonSerializer
+            
+            _serializer = new JsonSerializer
             {
+                ContractResolver = new PrivateFieldsContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
+        }
+        
+        public class PrivateFieldsContractResolver : DefaultContractResolver
+        {
+            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+            {
+                var props = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Select(f => CreateProperty(f, memberSerialization))
+                    .ToList();
+                props.ForEach(p => { p.Writable = true; p.Readable = true; });
+                return props;
+            }
+        }
 
-            using (StreamWriter sw = new StreamWriter(_cacheFilePath))
+        public bool Save<T>(T model)
+        {
+            using (StreamWriter sw = new StreamWriter(_fileName))
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
-                serializer.Serialize(writer, model);
+                _serializer.Serialize(writer, model);
                 return true;
             }
         }
@@ -34,8 +55,7 @@ namespace TestSerializeObjectToFile.CacheControllers
         {
             using (StreamReader file = File.OpenText(_cacheFilePath))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                return (T) serializer.Deserialize(file, typeof(T));
+                return (T) _serializer.Deserialize(file, typeof(T));
             }
         }
     }

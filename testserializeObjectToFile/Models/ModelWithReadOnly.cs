@@ -6,7 +6,7 @@ using ProtoBuf;
 namespace TestSerializeObjectToFile.Models
 {
     // model 2 version
-    [ProtoContract, Serializable]
+    [ProtoContract(SkipConstructor = true), Serializable]
     public class ModelWithReadOnly
     {
         [ProtoMember(1)] 

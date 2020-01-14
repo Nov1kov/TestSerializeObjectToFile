@@ -2,40 +2,20 @@
 
 ## Test methodology
 
+### 1. Update [model](https://github.com/Nov1kov/TestSerializeObjectToFile/blob/master/testserializeObjectToFile/Models/Model.cs)
+
 Save model version 1 to file, and load this file to model version 2.
 
-### model version 1
+* Model has one object which has link to Model
+* Model version 1 has MissingField and MissingList which doesn't have model version 2.
+* Model version 2 has NewField which didn't have model version 1
 
-```c#
-public class Model
-{
-    public int Id { get; set; }
-    public string Field { get; set; }
-    public string NewField { get; set; }
-    public List<Item> List { get; } = new List<Item>();
-    public ClassWithLink Recursive { get; set; }
-    
-    // field which will hide in future version
-    public string MissingField { get; set; }
-    public List<string> MissingList { get; } = new List<string>();
-}
-```
+### 2. Save [model with private fields](https://github.com/Nov1kov/TestSerializeObjectToFile/blob/master/testserializeObjectToFile/Models/ModelWithReadOnly.cs)
 
-### model version 2
-
-```c#
-public class Model
-{
-    public int Id { get; set; }
-    public string Field { get; set; }
-    public string NewField { get; set; }
-    public List<Item> List { get; } = new List<Item>();
-    public ClassWithLink Recursive { get; set; }
-    
-    // new field, must be empty list
-    public List<Item> NewList { get; set; } = new List<Item>();
-}
-```
+* Model has private readonly field
+* Model has auto-property with private setter
+* Model has auto-property without setter
+* Model has propery with only getter. (this field shouldn't serialize) 
 
 ## Serializer's features
 
@@ -55,6 +35,7 @@ public class Model
 ### Newtonsoft.Json
 * optional attributes for classes and fields
 * for recursion options `ReferenceLoopHandling = ReferenceLoopHandling.Serialize`, `PreserveReferencesHandling = PreserveReferencesHandling.Objects`
+* for save only in private fields need custom `IContractResolver`
 
 
 ## Model's size (bytes)
@@ -79,7 +60,7 @@ public class Model
 
 ## Todo:
 * [ ] test with big files
-* [ ] test with different namespaces
+* [ ] test with different namespaces and classes
 
 #### also read:
 * [Serialization Performance comparison (C#/.NET)](https://maxondev.com/serialization-performance-comparison-c-net-formats-frameworks-xmldatacontractserializer-xmlserializer-binaryformatter-json-newtonsoft-servicestack-text/)

@@ -5,16 +5,18 @@ namespace TestSerializeObjectToFile.CacheControllers
     class BinaryController : ICacheController
     {
         private readonly string _cacheFilePath;
+        private readonly string _fileName;
 
         public BinaryController(string directory, string fileName)
         {
             _cacheFilePath = Path.Combine(directory, fileName);
+            _fileName = fileName;
             DirectoryInfo di = Directory.CreateDirectory(directory);
         }
 
         public bool Save<T>(T model)
         {
-            using (Stream stream = File.Open(_cacheFilePath, FileMode.Create))
+            using (Stream stream = File.Open(_fileName, FileMode.Create))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 binaryFormatter.Serialize(stream, model);

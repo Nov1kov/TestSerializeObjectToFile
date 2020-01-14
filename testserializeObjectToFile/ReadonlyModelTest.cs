@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using TestSerializeObjectToFile.CacheControllers;
 using TestSerializeObjectToFile.Models;
 using Xunit;
