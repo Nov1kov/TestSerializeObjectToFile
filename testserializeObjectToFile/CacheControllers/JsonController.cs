@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -22,7 +23,7 @@ namespace TestSerializeObjectToFile.CacheControllers
             
             _serializer = new JsonSerializer
             {
-                TypeNameHandling = TypeNameHandling.All,
+                TypeNameHandling = TypeNameHandling.Auto,
                 ContractResolver = new PrivateFieldsContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -37,8 +38,21 @@ namespace TestSerializeObjectToFile.CacheControllers
                 var props = GetFields(type, BindingFlags.NonPublic | BindingFlags.Instance)
                     .Select(f => CreateProperty(f, memberSerialization))
                     .ToList();
-                props.ForEach(p => { p.Writable = true; p.Readable = true; });
+                props.ForEach(p => { 
+                    p.Writable = true; 
+                    p.Readable = true;
+                    p.PropertyName = FixPropertyName(p.PropertyName);
+                });
                 return props;
+            }
+
+            private static string FixPropertyName(string name)
+            {
+                if (name.Contains("<"))
+                {
+                    return name.Replace("<", "").Replace(">k__BackingField", "");
+                }
+                return name;
             }
             
             private static IEnumerable<FieldInfo> GetFields(

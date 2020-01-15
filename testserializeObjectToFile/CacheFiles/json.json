@@ -1,0 +1,1 @@
+{"$id":"1","Id":111,"Field":"some string","List":[{"$id":"2","Id":1},{"$id":"3","Id":2}],"Recursive":{"$id":"4","Model":{"$ref":"1"},"Id":14},"MissingField":"missing str field","MissingList":["item 1","item 2"]}

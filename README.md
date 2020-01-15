@@ -17,14 +17,40 @@ Save model version 1 to file, and load this file to model version 2.
 * Model has auto-property without setter
 * Model has propery with only getter. (this field shouldn't serialize) 
 
-### 3. Save and load list of abstract items
+### 3. Save and load [list of abstract items](https://github.com/Nov1kov/TestSerializeObjectToFile/blob/master/testserializeObjectToFile/Models/AbstractList.cs)
 
 * list with specific items, save and load like as list of abstract items
 
-### 4. Save and load model with subclasses
+### 4. Save and load [model with subclasses](https://github.com/Nov1kov/TestSerializeObjectToFile/blob/master/testserializeObjectToFile/Models/ModelWithBaseClass.cs)
 
 * model derived from base class
 * model has public inner class 
+
+### 5. Model's size (byte)
+
+List of abstract items `public List<IItem> Items { get; } = new List<IItem>();`  which contain items with different int and strings
+
+```c#
+    public class ItemImpl : IItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+```
+
+
+|           | Json TypeNameHandling.Auto** | Json  | Binary |  Protobuf  |
+|:----------|:-------|:-----|:---|:---|
+| 10 items |   1 872     | 393 |  1 085  |  186  |
+| 50 items |  6 443     |  1 993 | 2 405   |  986  |
+| 200 items |   26 095     | 8 295 | 7 455 |  4 230  |
+| 1000 items |   131 697     | 42 697 | 34 655  |  22 630  |
+| 1000 items * |   42 697     | 42 697 | 34 707  |  16 760   |
+
+*items - without abstraction `public List<ItemImpl> Items { get; } = new List<ItemImpl>();`
+
+** TypeNameHandling.Auto - using for desirialize objects from list with abstract objects 
+
 
 ## Serializer's features
 
@@ -50,12 +76,6 @@ Save model version 1 to file, and load this file to model version 2.
 * for serialize abstract items need `TypeNameHandling = TypeNameHandling.Auto`
 
 
-## Model's size (bytes)
-|           | Binary | Json |  Protobuf  |
-|:----------|:-------|:-----|:---|
-| version 1 |   1 518     |  211    |  66  |
-| version 2 |   1 357     |  155    |  31  |
-
 ## Conclusion
 ### Protobuf-net
 * :heavy_plus_sign: smallest size of model
@@ -73,7 +93,6 @@ Save model version 1 to file, and load this file to model version 2.
 * :heavy_minus_sign: hard work with private fields
 
 ## Todo:
-* [ ] test with big files
 * [ ] test with different namespaces and classes
 
 #### also read:

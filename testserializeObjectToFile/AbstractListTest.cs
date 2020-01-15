@@ -12,7 +12,7 @@ namespace TestSerializeObjectToFile
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf_abstract_list.bin";
         private const string BinaryFile = "binary_abstract_list.data";
-        private const string JsonFile = "model_abstract_list.json";
+        private const string JsonFile = "json_abstract_list.json";
         
         public AbstractListTest()
         {

@@ -12,7 +12,7 @@ namespace TestSerializeObjectToFile
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf_read_only.bin";
         private const string BinaryFile = "binary_read_only.data";
-        private const string JsonFile = "newtonsoft_read_only.json";
+        private const string JsonFile = "json_read_only.json";
         
         public ReadonlyModelTest()
         {

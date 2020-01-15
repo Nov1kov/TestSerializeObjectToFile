@@ -23,7 +23,7 @@
       <None Update="CacheFiles\protobuf.bin">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="CacheFiles\model.json">
+      <None Update="CacheFiles\json.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="CacheFiles\binary.data">
@@ -32,7 +32,7 @@
       <None Update="CacheFiles\binary_read_only.data">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="CacheFiles\newtonsoft_read_only.json">
+      <None Update="CacheFiles\json_read_only.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="CacheFiles\protobuf_read_only.bin">
@@ -41,7 +41,7 @@
       <None Update="CacheFiles\binary_abstract_list.data">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="CacheFiles\model_abstract_list.json">
+      <None Update="CacheFiles\json_abstract_list.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="CacheFiles\protobuf_abstract_list.bin">

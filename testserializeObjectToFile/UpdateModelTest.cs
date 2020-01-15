@@ -11,7 +11,7 @@ namespace TestSerializeObjectToFile
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf.bin";
         private const string BinaryFile = "binary.data";
-        private const string JsonFile = "model.json";
+        private const string JsonFile = "json.json";
         
         public UpdateModelTest()
         {
