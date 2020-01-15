@@ -22,6 +22,7 @@ namespace TestSerializeObjectToFile.CacheControllers
             
             _serializer = new JsonSerializer
             {
+                TypeNameHandling = TypeNameHandling.Auto,
                 ContractResolver = new PrivateFieldsContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
