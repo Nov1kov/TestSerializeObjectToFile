@@ -18,11 +18,11 @@ namespace TestSerializeObjectToFile.CacheControllers
         {
             _cacheFilePath = Path.Combine(directory, fileName);
             _fileName = fileName;
-            DirectoryInfo di = Directory.CreateDirectory(directory);
+            var di = Directory.CreateDirectory(directory);
             
             _serializer = new JsonSerializer
             {
-                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameHandling = TypeNameHandling.All,
                 ContractResolver = new PrivateFieldsContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -34,11 +34,38 @@ namespace TestSerializeObjectToFile.CacheControllers
         {
             protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
             {
-                var props = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                var props = GetFields(type, BindingFlags.NonPublic | BindingFlags.Instance)
                     .Select(f => CreateProperty(f, memberSerialization))
                     .ToList();
                 props.ForEach(p => { p.Writable = true; p.Readable = true; });
                 return props;
+            }
+            
+            private static IEnumerable<FieldInfo> GetFields(
+                Type targetType,
+                BindingFlags bindingAttr)
+            {
+                List<MemberInfo> source = new List<MemberInfo>(targetType.GetFields(bindingAttr));
+                GetChildPrivateFields(source, targetType, bindingAttr);
+                return source.Cast<FieldInfo>();
+            }
+            
+            private static void GetChildPrivateFields(
+                IList<MemberInfo> initialFields,
+                Type targetType,
+                BindingFlags bindingAttr)
+            {
+                if ((bindingAttr & BindingFlags.NonPublic) == BindingFlags.Default)
+                    return;
+                BindingFlags bindingAttr1 = bindingAttr;
+                while ((targetType = targetType.BaseType) != null)
+                {
+                    var fieldInfos = targetType.GetFields(bindingAttr1).Where(f => f.IsPrivate);
+                    foreach (var fieldInfo in fieldInfos)
+                    {
+                        initialFields.Add(fieldInfo);
+                    }
+                }
             }
         }
 

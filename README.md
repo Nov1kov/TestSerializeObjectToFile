@@ -21,11 +21,17 @@ Save model version 1 to file, and load this file to model version 2.
 
 * list with specific items, save and load like as list of abstract items
 
+### 4. Save and load model with subclasses
+
+* model derived from base class
+* model has public inner class 
+
 ## Serializer's features
 
 ### Protobuf
 
-* required attributes for classes and fields `[ProtoContract]` `[ProtoMember]`
+* required attributes for classes and interfaces `[ProtoContract]`
+* required for every field `[ProtoMember]`
 * strong order in fields, so attribute required for every field
 * required mark link against recusrsion `[ProtoMember(1, AsReference = true)]`
 * required attribute for class with constructors `[ProtoContract(SkipConstructor = true)]`f
@@ -64,11 +70,11 @@ Save model version 1 to file, and load this file to model version 2.
 
 ### Newtonsoft.Json
 * :heavy_plus_sign: easiest implementation 
+* :heavy_minus_sign: hard work with private fields
 
 ## Todo:
 * [ ] test with big files
 * [ ] test with different namespaces and classes
-* [ ] test with subclasses
 
 #### also read:
 * [Serialization Performance comparison (C#/.NET)](https://maxondev.com/serialization-performance-comparison-c-net-formats-frameworks-xmldatacontractserializer-xmlserializer-binaryformatter-json-newtonsoft-servicestack-text/)
