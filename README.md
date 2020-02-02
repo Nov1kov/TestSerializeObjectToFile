@@ -100,7 +100,9 @@ List of abstract items `public List<IItem> Items { get; } = new List<IItem>();` 
 * :heavy_minus_sign: hard work with private fields
 
 ## Todo:
-* [ ] test with different namespaces and classes
+* [ ] try use [autoprotobuf](https://stackoverflow.com/questions/12308196/protobuf-net-serialization-without-annotation)
+* [ ] try xml parser
+
 
 #### also read:
 * [Serialization Performance comparison (C#/.NET)](https://maxondev.com/serialization-performance-comparison-c-net-formats-frameworks-xmldatacontractserializer-xmlserializer-binaryformatter-json-newtonsoft-servicestack-text/)
