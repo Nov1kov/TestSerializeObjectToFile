@@ -13,11 +13,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: Debug Action
-      uses: hmarr/debug-action@v1.0.0
-
     - name: Run tests
       run: |
         pwd
         ls
-        dotnet test testserializeObjectToFile/testserializeObjectToFile.sln
+        dotnet test testserializeObjectToFile.sln
