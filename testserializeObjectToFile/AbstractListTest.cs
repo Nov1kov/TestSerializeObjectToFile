@@ -8,24 +8,10 @@ namespace TestSerializeObjectToFile
 {
     public class AbstractListTest
     {
-        private AbstractList _model;
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf_abstract_list.bin";
         private const string BinaryFile = "binary_abstract_list.data";
         private const string JsonFile = "json_abstract_list.json";
-        
-        public AbstractListTest()
-        {
-            _model = new AbstractList();
-            
-            for (int i = 0; i < 10; i++)
-            {
-                _model.Items.Add(new ItemImplementation
-                {
-                    Id = i,
-                });
-            }
-        }
 
         public static IEnumerable<object[]> GetCacheController()
         {
@@ -34,11 +20,27 @@ namespace TestSerializeObjectToFile
             yield return new object[] { new ProtobufController(CacheFileDirectory, ProtobufFile) };
         }
         
+        private AbstractList CreateModel()
+        {
+            var model = new AbstractList();
+            
+            for (int i = 0; i < 10; i++)
+            {
+                model.Items.Add(new ItemImplementation
+                {
+                    Id = i,
+                });
+            }
+
+            return model;
+        }
+
         [Theory]
         [MemberData(nameof(GetCacheController))]
         public void Serialize_Save_Model(ICacheController cacheController)
         {
-            cacheController.Save(_model);
+            var model = CreateModel();
+            cacheController.Save(model);
         }
 
         [Theory]

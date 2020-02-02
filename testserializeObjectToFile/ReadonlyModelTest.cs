@@ -8,20 +8,11 @@ namespace TestSerializeObjectToFile
 {
     public class ReadonlyModelTest
     {
-        private ModelWithReadOnly _model;
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf_read_only.bin";
         private const string BinaryFile = "binary_read_only.data";
         private const string JsonFile = "json_read_only.json";
-        
-        public ReadonlyModelTest()
-        {
-            _model = new ModelWithReadOnly(96, "field2 string");
-            _model.ChangeField("field1 string");
-            _model.Dictionary.Add(14, "14");
-            _model.Dictionary.Add(11, "11");
-        }
-        
+
         public static IEnumerable<object[]> GetCacheController()
         {
             yield return new object[] { new JsonController(CacheFileDirectory, JsonFile) };
@@ -29,11 +20,21 @@ namespace TestSerializeObjectToFile
             yield return new object[] { new ProtobufController(CacheFileDirectory, ProtobufFile) };
         }
         
+        public ModelWithReadOnly CreateModel()
+        {
+            var model = new ModelWithReadOnly(96, "field2 string");
+            model.ChangeField("field1 string");
+            model.Dictionary.Add(14, "14");
+            model.Dictionary.Add(11, "11");
+            return model;
+        }
+        
         [Theory]
         [MemberData(nameof(GetCacheController))]
         public void Serialize_Save_Model(ICacheController cacheController)
         {
-            cacheController.Save(_model);
+            var model = CreateModel();
+            cacheController.Save(model);
         }
 
         [Theory]

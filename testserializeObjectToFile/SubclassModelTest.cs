@@ -8,22 +8,10 @@ namespace TestSerializeObjectToFile
 {
     public class SubclassModelTest
     {
-        private ModelWithSubclass _model;
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf_subclass.bin";
         private const string BinaryFile = "binary_subclass.data";
         private const string JsonFile = "json_subclass.json";
-        
-        public SubclassModelTest()
-        {
-            _model = new ModelWithSubclass("inner string")
-            {
-                IntId1 = 1,
-                IntId2 = 2,
-                StrField1 = "Str1",
-                StrField2 = "Str2",
-            };
-        }
 
         public static IEnumerable<object[]> GetCacheController()
         {
@@ -31,12 +19,24 @@ namespace TestSerializeObjectToFile
             yield return new object[] { new BinaryController(CacheFileDirectory, BinaryFile) };
             yield return new object[] { new ProtobufController(CacheFileDirectory, ProtobufFile) };
         }
+
+        private ModelWithSubclass CreateModel()
+        {
+            return new ModelWithSubclass("inner string")
+            {
+                IntId1 = 1,
+                IntId2 = 2,
+                StrField1 = "Str1",
+                StrField2 = "Str2",
+            };
+        }
         
         [Theory]
         [MemberData(nameof(GetCacheController))]
         public void Serialize_Save_Model(ICacheController cacheController)
         {
-            cacheController.Save(_model);
+            var model = CreateModel();
+            cacheController.Save(model);
         }
 
         [Theory]

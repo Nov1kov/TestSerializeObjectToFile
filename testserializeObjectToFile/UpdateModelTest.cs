@@ -7,24 +7,10 @@ namespace TestSerializeObjectToFile
 {
     public class UpdateModelTest
     {
-        private Model _model;
         private const string CacheFileDirectory = "CacheFiles";
         private const string ProtobufFile = "protobuf.bin";
         private const string BinaryFile = "binary.data";
         private const string JsonFile = "json.json";
-        
-        public UpdateModelTest()
-        {
-            _model = new Model
-            {
-                Id = 111,
-                Field = "some string",
-                List = { new Item(1), new Item(2) },
-                //MissingField = "missing str field",
-                //MissingList = { "item 1", "item 2" },
-            };
-            _model.Recursive = new ClassWithLink(_model, 14);
-        }
 
         public static IEnumerable<object[]> GetCacheController()
         {
@@ -33,11 +19,26 @@ namespace TestSerializeObjectToFile
             yield return new object[] { new ProtobufController(CacheFileDirectory, ProtobufFile) };
         }
         
+        private Model CreateModel()
+        {
+            var model = new Model
+            {
+                Id = 111,
+                Field = "some string",
+                List = { new Item(1), new Item(2) },
+                //MissingField = "missing str field",
+                //MissingList = { "item 1", "item 2" },
+            };
+            model.Recursive = new ClassWithLink(model, 14);
+            return model;
+        }
+        
         [Theory]
         [MemberData(nameof(GetCacheController))]
         public void Serialize_Save_Model(ICacheController cacheController)
         {
-            cacheController.Save(_model);
+            var model = CreateModel();
+            cacheController.Save(model);
         }
 
         [Theory]
