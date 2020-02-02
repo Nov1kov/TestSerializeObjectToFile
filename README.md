@@ -1,5 +1,7 @@
 # Save C# object to file.
 
+![XUnit tests](https://github.com/Nov1kov/TestSerializeObjectToFile/workflows/XUnit%20tests/badge.svg?event=push)
+
 ## Test methods
 
 ### 1. Update [model](https://github.com/Nov1kov/TestSerializeObjectToFile/blob/master/testserializeObjectToFile/Models/Model.cs)
