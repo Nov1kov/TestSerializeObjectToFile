@@ -53,6 +53,11 @@ List of abstract items `public List<IItem> Items { get; } = new List<IItem>();` 
 
 ** TypeNameHandling.Auto - using for desirialize objects from list with abstract objects 
 
+### 6. Save and load models of different namespaces 
+
+* Save as Model of type name ..V1.Model
+* Load as Model of type name ..V2.ModelV2 which has same fields
+
 
 ## Serializer's features
 
@@ -63,13 +68,13 @@ List of abstract items `public List<IItem> Items { get; } = new List<IItem>();` 
 * strong order in fields, so attribute required for every field
 * required mark link against recusrsion `[ProtoMember(1, AsReference = true)]`
 * required attribute for class with constructors `[ProtoContract(SkipConstructor = true)]`f
-* additional setup for sub classes `ProtoInclude`
+* additional setup for sub classes `ProtoInclude` or `AddSubType` in Runtime
 * for serialize list of abstract items `public List<IItem> Items { get; }` need to wrap in class the list.
 
 ### Binary 
 * required attributes for classes `[Serializable]`
 * optional callbacks for initialize new objects `[OnDeserialized]`
-
+* required implement `SerializationBinder` for compatibility with older versions
 
 ### Newtonsoft.Json
 * optional attributes for classes and fields
@@ -87,7 +92,7 @@ List of abstract items `public List<IItem> Items { get; } = new List<IItem>();` 
 * :heavy_plus_sign: no third party libraries
 * :heavy_plus_sign: easiest support recursion
 * :heavy_plus_sign: easiest support interface and abstract class implementations
-* :heavy_minus_sign: don't support rename class, fields
+* :heavy_minus_sign: hard support compatibility (rename class, fields, namespaces)
 * :heavy_minus_sign: may dependency of .net version
 
 ### Newtonsoft.Json

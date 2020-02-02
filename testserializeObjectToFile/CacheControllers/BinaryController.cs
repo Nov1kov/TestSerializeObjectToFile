@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace TestSerializeObjectToFile.CacheControllers
@@ -29,7 +30,26 @@ namespace TestSerializeObjectToFile.CacheControllers
             using (Stream stream = File.Open(_cacheFilePath, FileMode.Open))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Binder = new ModelV1ToModelV2Binder();
                 return (T) binaryFormatter.Deserialize(stream);
+            }
+        }
+        
+        // http://www.diranieh.com/NETSerialization/BinarySerialization.htm
+        // https://stackoverflow.com/questions/3545544/how-to-refactor-a-class-that-is-serialized-in-net
+        public class ModelV1ToModelV2Binder : System.Runtime.Serialization.SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                const string strAssemblyXType = "TestSerializeObjectToFile.Models.V1.Model";
+                const string strAssemblyYType = "TestSerializeObjectToFile.Models.V2.ModelV2";
+
+                // Return different type if the assembly name passed in as a parameter is AssemblyX
+                Type obTypeToDeserialize = null;
+                if (typeName == strAssemblyXType)
+                    obTypeToDeserialize = Type.GetType( strAssemblyYType );
+
+                return obTypeToDeserialize;
             }
         }
     }
